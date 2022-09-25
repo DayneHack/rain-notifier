@@ -1,13 +1,16 @@
 const key = config.MY_KEY
-const locationKey = '53286'
-//54488 Hopedale
-//53286 vancouver
+
 async function startFunc(){
 
     var x = document.getElementById("resultDiv");
     var y = document.getElementById("rainChanceDiv");
+    var z = document.getElementById("location")
 
-    let data = getWeatherData();
+    var locationId = getLocationId(z.value)
+    locationId = await locationId
+    locationKey = locationId[0].Key
+
+    let data = getWeatherData(locationKey);
     let result = await determineRain(data);
 
     if (result.itWillRain){
@@ -20,8 +23,9 @@ async function startFunc(){
     }
 }
 
-async function getWeatherData(){
+async function getWeatherData(locationKey){
 
+    locationKey = await locationKey
     var base = "http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/";
     var apikey = `?apikey=${key}`;
     var call = await fetch(base + locationKey + apikey);
@@ -34,7 +38,6 @@ async function determineRain(data){
 
     data = await data;
     var rainChance = 0;
-    console.log(data);
     for (let i = 0; i < 12; i++){
         if (data[i].HasPrecipitation){
             var itWillRain = true;
@@ -47,4 +50,15 @@ async function determineRain(data){
         }
     }
     return {itWillRain, rainChance}
+}
+
+async function getLocationId(text){
+
+    var base = "http://dataservice.accuweather.com/locations/v1/cities/search";
+    var apikey = `?apikey=${key}&q=${text}`;
+
+    var call = await fetch(base + apikey);
+    var id = await call.json();
+
+    return id
 }
