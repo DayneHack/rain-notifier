@@ -1,25 +1,28 @@
-const key = config.MY_KEY
+const key = config.MY_KEY;
 
 async function startFunc(){
 
+    var w = document.getElementById("img");
     var x = document.getElementById("resultDiv");
     var y = document.getElementById("rainChanceDiv");
-    var z = document.getElementById("location")
+    var z = document.getElementById("location");
 
-    var locationId = getLocationId(z.value)
-    locationId = await locationId
-    locationKey = locationId[0].Key
+    var locationId = getLocationId(z.value);
+    locationId = await locationId;
+    locationKey = locationId[0].Key;
 
     let data = getWeatherData(locationKey);
     let result = await determineRain(data);
 
     if (result.itWillRain){
         x.innerHTML = "It will rain today";
-        y.innerHTML = ""
+        y.innerHTML = "";
+        w.src = "/assets/2.png"
     }
     else{
         x.innerHTML = "It likely will not rain today";
-        y.innerHTML = "Chance of rain today: " + parseInt(result.rainChance)/10 + "%"
+        y.innerHTML = "Chance of rain today: " + parseInt(result.rainChance) * 10 + "%";
+        w.src = "/assets/3.png"
     }
 }
 
