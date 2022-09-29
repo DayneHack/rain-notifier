@@ -1,6 +1,6 @@
-const key = "yen0nyQobGnRmlx8aNeuMFHJArHIw3PT";
-
 async function startFunc(){
+
+    const key = "yen0nyQobGnRmlx8aNeuMFHJArHIw3PT";
 
     var u = document.getElementById("currentTempDiv");
     var v= document.getElementById("lowestTempDiv");
