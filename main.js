@@ -34,7 +34,7 @@ async function startFunc(){
 async function getWeatherData(locationKey){
 
     locationKey = await locationKey
-    var base = "http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/";
+    var base = "https://dataservice.accuweather.com/forecasts/v1/hourly/12hour/";
     var apikey = `?apikey=${key}`;
     var call = await fetch(base + locationKey + apikey + "&metric=true");
     var data = await call.json();
@@ -63,7 +63,7 @@ async function determineRain(data){
 
 async function getLocationId(text){
 
-    var base = "http://dataservice.accuweather.com/locations/v1/cities/search";
+    var base = "https://dataservice.accuweather.com/locations/v1/cities/search";
     var apikey = `?apikey=${key}&q=${text}`;
 
     var call = await fetch(base + apikey);
