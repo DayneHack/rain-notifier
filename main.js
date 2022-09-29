@@ -1,4 +1,4 @@
-const key = config.MY_KEY;
+const key = "yen0nyQobGnRmlx8aNeuMFHJArHIw3PT";
 
 async function startFunc(){
 
@@ -19,12 +19,12 @@ async function startFunc(){
     if (result.itWillRain){
         x.innerHTML = "It will rain today";
         y.innerHTML = "";
-        w.src = "/assets/2.png"
+        w.src = "/pics/9.png"
     }
     else{
         x.innerHTML = "It likely will not rain today";
         y.innerHTML = "Chance of rain today: " + parseInt(result.rainChance) * 10 + "%";
-        w.src = "/assets/3.png";
+        w.src = "/pics/10.png";
     }
     let temperatures = await findTemperatures(data);
     u.innerHTML = "It is currently " + temperatures.currentTemp + " degrees Celsius.";
