@@ -2,6 +2,8 @@ const key = config.MY_KEY;
 
 async function startFunc(){
 
+    var u = document.getElementById("currentTempDiv");
+    var v= document.getElementById("lowestTempDiv");
     var w = document.getElementById("img");
     var x = document.getElementById("resultDiv");
     var y = document.getElementById("rainChanceDiv");
@@ -22,8 +24,11 @@ async function startFunc(){
     else{
         x.innerHTML = "It likely will not rain today";
         y.innerHTML = "Chance of rain today: " + parseInt(result.rainChance) * 10 + "%";
-        w.src = "/assets/3.png"
+        w.src = "/assets/3.png";
     }
+    let temperatures = await findTemperatures(data);
+    u.innerHTML = "It is currently " + temperatures.currentTemp + " degrees Celsius.";
+    v.innerHTML = "The lowest temperature today will be " + temperatures.lowestTemp + " degrees Celsius at " + temperatures.time;
 }
 
 async function getWeatherData(locationKey){
@@ -31,8 +36,9 @@ async function getWeatherData(locationKey){
     locationKey = await locationKey
     var base = "http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/";
     var apikey = `?apikey=${key}`;
-    var call = await fetch(base + locationKey + apikey);
+    var call = await fetch(base + locationKey + apikey + "&metric=true");
     var data = await call.json();
+    console.log(data)
 
     return data
 }
@@ -63,5 +69,21 @@ async function getLocationId(text){
     var call = await fetch(base + apikey);
     var id = await call.json();
 
-    return id
+    return id;
+}
+
+async function findTemperatures(data){
+
+    data = await data;
+    var currentTemp = data[0].Temperature.Value;
+    var lowestTemp = 100;
+
+    for (let i = 0; i < 12; i++){
+        if (data[i].Temperature.Value < lowestTemp){
+            lowestTemp = data[i].Temperature.Value;
+            var time = data[i].DateTime.slice(11, 19)
+        }
+    }
+
+    return {currentTemp, lowestTemp, time}
 }
