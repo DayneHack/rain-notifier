@@ -9,12 +9,12 @@ async function startFunc(){
     var y = document.getElementById("rainChanceDiv");
     var z = document.getElementById("location");
 
-    var locationId = getLocationId(z.value);
+    var locationId = getLocationId(z.value, key);
     locationId = await locationId;
     locationKey = locationId[0].Key;
 
-    let data = getWeatherData(locationKey);
-    let result = await determineRain(data);
+    let data = getWeatherData(locationKey, key);
+    let result = await determineRain(data, key);
 
     if (result.itWillRain){
         x.innerHTML = "It will rain today";
@@ -31,14 +31,13 @@ async function startFunc(){
     v.innerHTML = "The lowest temperature today will be " + temperatures.lowestTemp + " degrees Celsius at " + temperatures.time;
 }
 
-async function getWeatherData(locationKey){
+async function getWeatherData(locationKey, key){
 
     locationKey = await locationKey
     var base = "http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/";
     var apikey = `?apikey=${key}`;
     var call = await fetch(base + locationKey + apikey + "&metric=true");
     var data = await call.json();
-    console.log(data)
 
     return data
 }
@@ -61,9 +60,9 @@ async function determineRain(data){
     return {itWillRain, rainChance}
 }
 
-async function getLocationId(text){
+async function getLocationId(text, key){
 
-    var base = "htts://dataservice.accuweather.com/locations/v1/cities/search";
+    var base = "http://dataservice.accuweather.com/locations/v1/cities/search";
     var apikey = `?apikey=${key}&q=${text}`;
 
     var call = await fetch(base + apikey);
